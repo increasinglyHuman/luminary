@@ -1,0 +1,211 @@
+{
+  "archetypes": [
+    {
+      "id": "charge_spell",
+      "phases": {
+        "buildup": {
+          "duration": 1.2,
+          "effects": [
+            { "primitive": "energy_orb",    "scale": [0.05, 1.0], "opacity": [0, 1] },
+            { "primitive": "ground_ring",   "scale": [0, 2.0],    "speed": 1.5 },
+            { "primitive": "electric_arc",  "intensity": [0, 0.7],"count": 3 }
+          ]
+        },
+        "release": {
+          "duration": 0.25,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 2.5, "opacity": [1, 0] },
+            { "primitive": "shockwave",     "speed": 9.0 }
+          ]
+        },
+        "projectile": {
+          "duration": 99,
+          "effects": [
+            { "primitive": "energy_orb",    "size": 0.35 },
+            { "primitive": "ribbon_trail",  "width": 0.18, "length": 1.8 }
+          ]
+        }
+      }
+    },
+    {
+      "id": "instant_strike",
+      "phases": {
+        "impact": {
+          "duration": 0.15,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 1.2, "intensity": 1.0 },
+            { "primitive": "particle_burst","count": 12, "speed": 4.0 }
+          ]
+        },
+        "aftermath": {
+          "duration": 0.4,
+          "effects": [
+            { "primitive": "smoke_wisp",    "opacity": [0.6, 0], "count": 3 }
+          ]
+        }
+      }
+    },
+    {
+      "id": "long_cast",
+      "phases": {
+        "windup": {
+          "duration": 0.8,
+          "effects": [
+            { "primitive": "ground_ring",   "scale": [0, 3.0], "speed": 1.2 },
+            { "primitive": "hex_rune",      "opacity": [0, 0.8], "rotation": 0.5 }
+          ]
+        },
+        "channel": {
+          "duration": 2.5,
+          "effects": [
+            { "primitive": "energy_orb",    "scale": [0.8, 1.4], "opacity": 1.0 },
+            { "primitive": "hex_rune",      "opacity": 0.8, "rotation": 1.5 },
+            { "primitive": "electric_arc",  "intensity": 0.5, "count": 5 }
+          ]
+        },
+        "culmination": {
+          "duration": 0.6,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 4.0 },
+            { "primitive": "shockwave",     "speed": 6.0 },
+            { "primitive": "particle_burst","count": 40, "speed": 6.0 }
+          ]
+        }
+      },
+      "loopPhase": "channel"
+    },
+    {
+      "id": "sustained_beam",
+      "phases": {
+        "startup": {
+          "duration": 0.2,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 0.5, "intensity": 0.6 }
+          ]
+        },
+        "hold": {
+          "duration": 99,
+          "effects": [
+            { "primitive": "beam_ray",      "width": 0.25, "distortion": 0.3 },
+            { "primitive": "electric_arc",  "intensity": 0.3, "count": 2 }
+          ]
+        },
+        "decay": {
+          "duration": 0.3,
+          "effects": [
+            { "primitive": "smoke_wisp",    "opacity": [0.4, 0], "count": 4 }
+          ]
+        }
+      },
+      "loopPhase": "hold"
+    },
+    {
+      "id": "shield_bubble",
+      "phases": {
+        "form": {
+          "duration": 0.4,
+          "effects": [
+            { "primitive": "aura_shell",    "scale": [0.1, 1.0], "opacity": [0, 0.7] },
+            { "primitive": "hex_rune",      "opacity": [0, 0.5], "rotation": 0.8 }
+          ]
+        },
+        "hold": {
+          "duration": 99,
+          "effects": [
+            { "primitive": "aura_shell",    "opacity": 0.5 },
+            { "primitive": "hex_rune",      "opacity": 0.3, "rotation": 0.2 }
+          ]
+        },
+        "break": {
+          "duration": 0.5,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 2.0, "opacity": [1.0, 0] },
+            { "primitive": "particle_burst","count": 20, "speed": 3.0 }
+          ]
+        },
+        "fade": {
+          "duration": 0.6,
+          "effects": [
+            { "primitive": "aura_shell",    "opacity": [0.5, 0] }
+          ]
+        }
+      },
+      "loopPhase": "hold"
+    },
+    {
+      "id": "heal_pulse",
+      "phases": {
+        "origin_burst": {
+          "duration": 0.3,
+          "effects": [
+            { "primitive": "healing_motes", "count": 8, "speed": 0.5 },
+            { "primitive": "impact_flash",  "spread": 0.8, "intensity": 0.6 }
+          ]
+        },
+        "wave": {
+          "duration": 0.8,
+          "effects": [
+            { "primitive": "ground_ring",   "scale": [0, 4.0], "speed": 3.0, "opacity": [0.8, 0] }
+          ]
+        },
+        "landing": {
+          "duration": 0.5,
+          "effects": [
+            { "primitive": "healing_motes", "count": 5, "speed": 0.8 }
+          ]
+        }
+      }
+    },
+    {
+      "id": "aoe_blast",
+      "phases": {
+        "gather": {
+          "duration": 0.6,
+          "effects": [
+            { "primitive": "ground_ring",   "scale": [3.0, 0.1], "speed": 2.0 },
+            { "primitive": "particle_burst","count": 15, "speed": -2.0 }
+          ]
+        },
+        "detonate": {
+          "duration": 0.3,
+          "effects": [
+            { "primitive": "impact_flash",  "spread": 5.0 },
+            { "primitive": "shockwave",     "speed": 12.0 },
+            { "primitive": "particle_burst","count": 60, "speed": 8.0 }
+          ]
+        },
+        "smoke": {
+          "duration": 1.5,
+          "effects": [
+            { "primitive": "smoke_wisp",    "count": 10, "opacity": [0.8, 0] }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ground_slam",
+      "phases": {
+        "wind_up": {
+          "duration": 0.5,
+          "effects": [
+            { "primitive": "electric_arc",  "intensity": [0, 0.9], "count": 4 }
+          ]
+        },
+        "impact": {
+          "duration": 0.2,
+          "effects": [
+            { "primitive": "shockwave",     "speed": 15.0 },
+            { "primitive": "particle_burst","count": 30, "speed": 5.0 }
+          ]
+        },
+        "crater": {
+          "duration": 1.2,
+          "effects": [
+            { "primitive": "ground_ring",   "scale": [0.5, 2.5], "opacity": [1.0, 0] },
+            { "primitive": "smoke_wisp",    "count": 6, "opacity": [0.7, 0] }
+          ]
+        }
+      }
+    }
+  ]
+}
