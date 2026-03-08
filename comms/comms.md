@@ -67,7 +67,10 @@ This document coordinates collaboration between all teams that touch the Luminar
 | 1 | Should Scripter have write access to palette, or read-only? | — | 2026-03-08 | Open |
 | 2 | Glitch preview: run full Babylon scene or lightweight canvas? | — | 2026-03-08 | Open |
 | 3 | DM trap effects: use existing archetypes or define trap-specific ones? | — | 2026-03-08 | Open |
-| 4 | Boot order: how to guarantee VFXSystem init before consumers call it? | — | 2026-03-08 | Open |
+| 4 | ~~Boot order: how to guarantee VFXSystem init before consumers call it?~~ | — | 2026-03-08 | **Resolved** — GameEventBus subscription eliminates boot-order dependency |
+| 5 | Social VFX behavioral trigger cooldowns: what feels right? | — | 2026-03-08 | Open |
+| 6 | Comms team: can local/say chat emit `'social:conversation'` events? | — | 2026-03-08 | Open |
+| 7 | Building/Crafting teams: can completion events include quality metadata? | — | 2026-03-08 | Open |
 
 ---
 
@@ -79,6 +82,9 @@ This document coordinates collaboration between all teams that touch the Luminar
 | 2 | Palette resolver has zero Babylon dependency | 2026-03-08 | Enables server-side use, unit testing, Scripter import |
 | 3 | Archetypes are JSON-driven, not code | 2026-03-08 | New spells = data change, no cross-team coordination |
 | 4 | ADR-VFX-001 is the authority document for module topology | 2026-03-08 | See docs/ADR-VFX-001-Akashic-VFX-Authority.md |
+| 5 | Use GameEventBus over direct function calls | 2026-03-08 | Eliminates boot-order, no cross-team imports, matches CombatVFXManager pattern |
+| 6 | Integrate with existing EffectsManager, don't duplicate | 2026-03-08 | World repo already has pooling, glow, post-processing — extend, don't rebuild |
+| 7 | All four axes get equal VFX vocabulary | 2026-03-08 | ADR-VFX-006: Social/Creative effects driven by behavioral triggers, not buttons |
 
 ---
 
