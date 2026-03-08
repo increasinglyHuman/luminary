@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlackBox Luminary — Akashic VFX System | poqpoq</title>
+  <meta name="description" content="Akashic VFX system for poqpoq World. Palette-driven visual identity — every player's soul made visible.">
+  <link rel="canonical" href="https://poqpoq.com/luminary/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://poqpoq.com/luminary/">
+  <meta property="og:title" content="BlackBox Luminary — Akashic VFX System">
+  <meta property="og:description" content="Palette-driven VFX for poqpoq World. No two players look alike.">
+  <meta property="og:site_name" content="BlackBox Creative Suite">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BlackBox Luminary — Akashic VFX System">
+  <meta name="twitter:description" content="Palette-driven VFX for poqpoq World. Every spell shows who you are.">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #0a0a0a; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    #app { width: 100%; height: 100%; display: none; }
+
+    /* ── Welcome Screen ────────────────────────────────── */
+
+    .welcome-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      overflow: hidden;
+    }
+
+    .welcome-screen::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 200%; height: 200%;
+      background-image:
+        linear-gradient(rgba(232, 163, 23, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 163, 23, 0.08) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.3;
+      animation: grid-move 10s linear infinite;
+    }
+
+    @keyframes grid-move {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Hero image — bottom-left */
+    .hero-image-container {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 50%; height: 80%;
+      max-width: 700px; max-height: 900px;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .welcome-hero-image {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      object-position: bottom left;
+      opacity: 0.8;
+    }
+
+    /* Content — centered title + cube */
+    .welcome-content {
+      text-align: center;
+      max-width: 600px;
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .welcome-content h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #e0e0e0;
+      margin-bottom: 12px;
+    }
+    .welcome-content h2 .accent {
+      color: #E8A317;
+      text-shadow:
+        0 0 20px rgba(232, 163, 23, 0.8),
+        0 0 40px rgba(232, 163, 23, 0.5),
+        0 0 60px rgba(232, 163, 23, 0.3);
+    }
+    .welcome-content p {
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      color: #888;
+      letter-spacing: 0.05em;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* ── Start Button + Wireframe Cube ─────────────────── */
+
+    .start-btn {
+      width: 200px; height: 200px;
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 24px; font-weight: 700;
+      color: #E8A317;
+      cursor: pointer;
+      position: relative;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-shadow: 0 0 20px currentColor;
+      transition: all 0.3s;
+      margin: 0 auto;
+      perspective: 400px;
+    }
+    .start-btn:hover {
+      transform: scale(1.1);
+      color: #F0C050;
+    }
+    .start-btn:active {
+      transform: scale(0.95);
+    }
+
+    .start-box-container {
+      width: 120px; height: 120px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotate-start-cube 3s linear infinite;
+    }
+    .start-box {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .start-box-face {
+      position: absolute;
+      width: 120px; height: 120px;
+      border: 3px solid #E8A317;
+      background: rgba(232, 163, 23, 0.05);
+      box-shadow:
+        inset 0 0 30px rgba(232, 163, 23, 0.2),
+        0 0 30px rgba(232, 163, 23, 0.3);
+    }
+    .start-box-face.front  { transform: translateZ(60px); }
+    .start-box-face.back   { transform: rotateY(180deg) translateZ(60px); }
+    .start-box-face.left   { transform: rotateY(-90deg) translateZ(60px); }
+    .start-box-face.right  { transform: rotateY(90deg) translateZ(60px); }
+    .start-box-face.top    { transform: rotateX(90deg) translateZ(60px); }
+    .start-box-face.bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+    @keyframes rotate-start-cube {
+      0%   { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    /* ── VFX Particles orbiting the cube ──────────────── */
+
+    .vfx-orbit-container {
+      position: absolute;
+      width: 340px; height: 340px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      pointer-events: none;
+    }
+
+    .vfx-orb {
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      margin: -8px 0 0 -8px;
+    }
+
+    /* Orb 1 — Soul amber (dominant) — BIG, blazing */
+    .vfx-orb.orb-1 {
+      width: 22px; height: 22px;
+      margin: -11px 0 0 -11px;
+      background: radial-gradient(circle at 35% 35%, #FFD060, #E8A317 60%, #C07800);
+      box-shadow:
+        0 0 20px #E8A317,
+        0 0 40px rgba(232, 163, 23, 0.8),
+        0 0 80px rgba(232, 163, 23, 0.5),
+        0 0 120px rgba(232, 163, 23, 0.25);
+      animation: orbit-1 2.8s linear infinite;
+    }
+
+    /* Orb 2 — Mental violet */
+    .vfx-orb.orb-2 {
+      width: 18px; height: 18px;
+      margin: -9px 0 0 -9px;
+      background: radial-gradient(circle at 35% 35%, #B080FF, #7B2FE8 60%, #4A0DAA);
+      box-shadow:
+        0 0 16px #7B2FE8,
+        0 0 36px rgba(123, 47, 232, 0.7),
+        0 0 70px rgba(123, 47, 232, 0.35);
+      animation: orbit-2 3.5s linear infinite;
+    }
+
+    /* Orb 3 — Social gold */
+    .vfx-orb.orb-3 {
+      width: 16px; height: 16px;
+      margin: -8px 0 0 -8px;
+      background: radial-gradient(circle at 35% 35%, #FFF080, #FFD700 60%, #CCA000);
+      box-shadow:
+        0 0 14px #FFD700,
+        0 0 32px rgba(255, 215, 0, 0.7),
+        0 0 60px rgba(255, 215, 0, 0.3);
+      animation: orbit-3 4.2s linear infinite reverse;
+    }
+
+    /* Orb 4 — Creative teal */
+    .vfx-orb.orb-4 {
+      width: 18px; height: 18px;
+      margin: -9px 0 0 -9px;
+      background: radial-gradient(circle at 35% 35%, #60FFD0, #14E0A5 60%, #0AAA78);
+      box-shadow:
+        0 0 16px #14E0A5,
+        0 0 36px rgba(20, 224, 165, 0.7),
+        0 0 70px rgba(20, 224, 165, 0.35);
+      animation: orbit-4 3.1s linear infinite;
+    }
+
+    /* Orb 5 — Physical ember */
+    .vfx-orb.orb-5 {
+      width: 16px; height: 16px;
+      margin: -8px 0 0 -8px;
+      background: radial-gradient(circle at 35% 35%, #FF9050, #FF5A14 60%, #CC3500);
+      box-shadow:
+        0 0 14px #FF5A14,
+        0 0 32px rgba(255, 90, 20, 0.7),
+        0 0 60px rgba(255, 90, 20, 0.3);
+      animation: orbit-5 2.4s linear infinite;
+    }
+
+    /* Orb 6 — Deity overlay (odin cobalt) */
+    .vfx-orb.orb-6 {
+      width: 20px; height: 20px;
+      margin: -10px 0 0 -10px;
+      background: radial-gradient(circle at 35% 35%, #6080FF, #1A33E6 60%, #0A15AA);
+      box-shadow:
+        0 0 18px #1A33E6,
+        0 0 40px rgba(26, 51, 230, 0.7),
+        0 0 80px rgba(26, 51, 230, 0.35);
+      animation: orbit-6 5s linear infinite reverse;
+    }
+
+    /* Orbital trails — long comet tails */
+    .vfx-orb::after {
+      content: '';
+      position: absolute;
+      width: 40px; height: 8px;
+      background: inherit;
+      border-radius: 50%;
+      opacity: 0.5;
+      filter: blur(6px);
+      top: 50%; left: -32px;
+      transform: translateY(-50%);
+    }
+    /* Second trail layer — wider, fainter */
+    .vfx-orb::before {
+      content: '';
+      position: absolute;
+      width: 60px; height: 14px;
+      background: inherit;
+      border-radius: 50%;
+      opacity: 0.2;
+      filter: blur(12px);
+      top: 50%; left: -48px;
+      transform: translateY(-50%);
+    }
+
+    /* No counter-rotation — orbs spin with orbit so comet tails trail behind */
+    @keyframes orbit-1 {
+      0%   { transform: rotate(0deg)   translateX(130px); }
+      100% { transform: rotate(360deg) translateX(130px); }
+    }
+    @keyframes orbit-2 {
+      0%   { transform: rotate(60deg)  translateX(145px); }
+      100% { transform: rotate(420deg) translateX(145px); }
+    }
+    @keyframes orbit-3 {
+      0%   { transform: rotate(120deg) translateX(115px); }
+      100% { transform: rotate(480deg) translateX(115px); }
+    }
+    @keyframes orbit-4 {
+      0%   { transform: rotate(180deg) translateX(140px); }
+      100% { transform: rotate(540deg) translateX(140px); }
+    }
+    @keyframes orbit-5 {
+      0%   { transform: rotate(240deg) translateX(110px); }
+      100% { transform: rotate(600deg) translateX(110px); }
+    }
+    @keyframes orbit-6 {
+      0%   { transform: rotate(300deg) translateX(155px); }
+      100% { transform: rotate(660deg) translateX(155px); }
+    }
+
+    /* ── Strength Signature Pulse (on cube center) ────── */
+
+    .soul-pulse {
+      position: absolute;
+      width: 180px; height: 180px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(232, 163, 23, 0.25) 0%,
+        rgba(232, 163, 23, 0.1) 40%,
+        transparent 70%);
+      box-shadow: 0 0 60px rgba(232, 163, 23, 0.15);
+      animation: soul-breathe 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes soul-breathe {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0.5; }
+      50%      { transform: translate(-50%, -50%) scale(1.4); opacity: 1.0; }
+    }
+
+    /* ── Suite Footer ──────────────────────────────────── */
+
+    .suite-footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 28px;
+      background: rgba(26, 26, 26, 0.95);
+      border-top: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 2001;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      backdrop-filter: blur(10px);
+    }
+    .suite-footer a {
+      color: #666;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .suite-footer a:hover {
+      color: #E8A317;
+    }
+    .suite-footer .sep {
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Splash Screen -->
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="hero-image-container">
+      <img src="images/Meshy_AI_e44820b49bcbeffb25c64d84222592d47719932e5e7cc9bdaba8bc4c1630111c.png" alt="BlackBox Luminary hero artwork" class="welcome-hero-image">
+    </div>
+    <div class="welcome-content">
+      <h2>BLACK BOX <span class="accent">LUMINARY</span></h2>
+      <p>Akashic VFX system<br>the soul made visible</p>
+      <button class="start-btn" id="welcomeStartBtn">
+        <div class="start-box-container" id="startCube">
+          <div class="start-box">
+            <div class="start-box-face front"></div>
+            <div class="start-box-face back"></div>
+            <div class="start-box-face left"></div>
+            <div class="start-box-face right"></div>
+            <div class="start-box-face top"></div>
+            <div class="start-box-face bottom"></div>
+          </div>
+        </div>
+        <!-- VFX: Soul orbs orbiting the cube — one per axis + deity -->
+        <div class="vfx-orbit-container">
+          <div class="soul-pulse"></div>
+          <div class="vfx-orb orb-1"></div>
+          <div class="vfx-orb orb-2"></div>
+          <div class="vfx-orb orb-3"></div>
+          <div class="vfx-orb orb-4"></div>
+          <div class="vfx-orb orb-5"></div>
+          <div class="vfx-orb orb-6"></div>
+        </div>
+        <span>START</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until START) -->
+  <div id="app" style="align-items:center;justify-content:center;height:100%;background:#0a0a0a;color:#888;font-family:'Space Mono',monospace;flex-direction:column;gap:16px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:28px;color:#E8A317;text-transform:uppercase;letter-spacing:0.05em;">Luminary</div>
+    <div style="font-size:14px;max-width:500px;text-align:center;line-height:1.8;color:#666;">
+      Akashic VFX System — palette resolver, primitive library,<br>
+      and archetype engine loading here.<br><br>
+      <span style="color:#E8A317;">12 primitives</span> &middot;
+      <span style="color:#7B2FE8;">14 archetypes</span> &middot;
+      <span style="color:#14E0A5;">4 axes</span> &middot;
+      <span style="color:#FF5A14;">16 deities</span>
+    </div>
+    <div style="font-size:11px;color:#444;margin-top:20px;">v1.0 &mdash; palette contract active &mdash; docs/ADR-VFX-002</div>
+  </div>
+
+  <!-- Footer — BlackBox Creative Suite -->
+  <footer class="suite-footer">
+    <a href="https://poqpoq.com" target="_blank" rel="noopener">poqpoq.com</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/world/" target="_blank" rel="noopener">World</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/legacy/" target="_blank" rel="noopener">Legacy</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/animator/" target="_blank" rel="noopener">Animator</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/skinner/" target="_blank" rel="noopener">Skinner</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/scripter/" target="_blank" rel="noopener">Scripter</a>
+    <span class="sep">|</span>
+    <a href="https://poqpoq.com/luminary/" target="_blank" rel="noopener" style="color: #E8A317;">Luminary</a>
+  </footer>
+
+  <script type="module">
+    // ── Splash screen logic ──────────────────────────────────
+
+    // Inline matrix rain (no build step needed for splash preview)
+    class LuminaryMatrix {
+      constructor() {
+        this.canvas = null;
+        this.ctx = null;
+        this.drops = [];
+        this.fontSize = 14;
+        this.columns = 0;
+        this.animationId = null;
+        this.isActive = false;
+        this.matrix = [
+          "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+          "V", "F", "X", "R", "G", "B", "H", "S", "L",
+          "P", "A", "L", "E", "T", "T", "E",
+          "S", "O", "U", "L", "G", "L", "O", "W",
+          "E", "M", "I", "T",
+          "{", "}", ";", "=>", "&&", "||",
+          "++", "->", "<<", ">>",
+          "/", "\\", "|", "-", "_", ">", "<",
+          "~", ".", ":", "*", "#",
+          "[", "]", "(", ")",
+          "\u2207", "\u2248", "\u221E", "\u2206", "\u03B8", "\u03BB",
+          "\u2588", "\u2593", "\u2592", "\u2591", "\u25CF", "\u25CB",
+          "\u2721", "\u2605", "\u2726", "\u2727",
+          "\u03B1", "\u03B2", "\u03B3", "\u03B4",
+        ];
+        this.messages = [
+          "SOUL COLOR RESOLVED",
+          "PALETTE \u2192 ARCHETYPE",
+          "AKASHIC RANK UP",
+          "EMBER CRYSTALLINE VOID",
+          "EMISSIVE BOOST 2.4",
+          "BLACKBOX LUMINARY",
+          "FOUR AXIS IDENTITY",
+          "THE SOUL SHOWING",
+          "DEITY OVERLAY ACTIVE",
+          "STR AGI END MAG WIS CUN",
+          "PARTICLE DENSITY 3.0",
+          "resolveAkashicPalette()",
+        ];
+      }
+
+      init() {
+        this.canvas = document.createElement("canvas");
+        this.canvas.id = "matrixRainCanvas";
+        this.canvas.style.cssText =
+          "position: absolute; top: 0; left: 0; width: 100%; height: 100%; " +
+          "pointer-events: none; z-index: 1; opacity: 0.6;";
+        const ws = document.getElementById("welcomeScreen");
+        if (ws) ws.insertBefore(this.canvas, ws.firstChild);
+        this.ctx = this.canvas.getContext("2d");
+        this.resize();
+        window.addEventListener("resize", () => this.resize());
+      }
+
+      resize() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
+        this.drops = [];
+        for (let i = 0; i < this.columns; i++) this.drops[i] = Math.random() * -100;
+      }
+
+      start() {
+        if (this.isActive) return;
+        this.isActive = true;
+        this.animate();
+      }
+
+      stop() {
+        this.isActive = false;
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        if (this.canvas) this.canvas.remove();
+      }
+
+      animate() {
+        if (!this.isActive || !this.ctx || !this.canvas) return;
+        this.ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillStyle = "#E8A317";
+        this.ctx.font = this.fontSize + 'px "Space Mono", monospace';
+
+        for (let i = 0; i < this.drops.length; i++) {
+          const char = this.matrix[Math.floor(Math.random() * this.matrix.length)];
+          const x = i * this.fontSize;
+          const y = this.drops[i] * this.fontSize;
+          if (this.drops[i] > 0) {
+            const g = this.ctx.createLinearGradient(0, y - 50, 0, y);
+            g.addColorStop(0, "rgba(232, 163, 23, 0)");
+            g.addColorStop(0.5, "rgba(232, 163, 23, 0.5)");
+            g.addColorStop(1, "rgba(232, 163, 23, 1)");
+            this.ctx.fillStyle = g;
+          }
+          this.ctx.fillText(char, x, y);
+          if (this.drops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) this.drops[i] = 0;
+          this.drops[i]++;
+        }
+        if (Math.random() < 0.001) this.showSpecial();
+        this.animationId = requestAnimationFrame(() => this.animate());
+      }
+
+      showSpecial() {
+        if (!this.ctx || !this.canvas) return;
+        const msg = this.messages[Math.floor(Math.random() * this.messages.length)];
+        const x = Math.random() * (this.canvas.width - msg.length * this.fontSize);
+        const y = Math.random() * this.canvas.height;
+        this.ctx.save();
+        this.ctx.font = "bold " + (this.fontSize * 2) + 'px "Space Mono", monospace';
+        this.ctx.fillStyle = "#fff";
+        this.ctx.shadowColor = "#E8A317";
+        this.ctx.shadowBlur = 20;
+        this.ctx.fillText(msg, x, y);
+        this.ctx.restore();
+      }
+    }
+
+    const matrix = new LuminaryMatrix();
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const welcomeStartBtn = document.getElementById("welcomeStartBtn");
+    const appContainer = document.getElementById("app");
+    const isEmbedded = window.self !== window.top;
+
+    if (isEmbedded) {
+      welcomeScreen?.remove();
+    } else {
+      matrix.init();
+      matrix.start();
+
+      welcomeStartBtn?.addEventListener("click", () => {
+        appContainer.style.display = "flex";
+        appContainer.style.opacity = "0";
+
+        setTimeout(() => {
+          if (welcomeScreen) {
+            welcomeScreen.style.transition = "opacity 1s ease-out";
+            welcomeScreen.style.opacity = "0";
+          }
+        }, 300);
+
+        setTimeout(() => {
+          appContainer.style.transition = "opacity 0.8s ease-in";
+          appContainer.style.opacity = "1";
+        }, 800);
+
+        setTimeout(() => {
+          if (welcomeScreen) welcomeScreen.style.display = "none";
+          matrix.stop();
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

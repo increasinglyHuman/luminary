@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SpellArchetype",
+  "description": "Luminary VFX archetype definition — data-driven spell/effect sequences.",
+  "type": "object",
+  "required": ["id", "phases"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique archetype identifier. System archetypes are lowercase_snake. User archetypes must use 'user:' prefix.",
+      "pattern": "^[a-z][a-z0-9_]*$|^user:[a-zA-Z0-9_]+$"
+    },
+    "phases": {
+      "type": "object",
+      "description": "Named phases executed in declaration order. Keys are phase names (e.g. 'buildup', 'release', 'projectile').",
+      "additionalProperties": {
+        "$ref": "#/$defs/EffectPhase"
+      },
+      "minProperties": 1
+    },
+    "loopPhase": {
+      "type": "string",
+      "description": "Which phase loops until externally stopped (e.g. 'hold' for sustained beam, 'channel' for long cast). Must match a key in phases."
+    }
+  },
+  "$defs": {
+    "EffectPhase": {
+      "type": "object",
+      "required": ["duration", "effects"],
+      "properties": {
+        "duration": {
+          "type": "number",
+          "description": "Phase duration in seconds. Use 99 for phases controlled by external stop signal (loopPhase).",
+          "minimum": 0.01
+        },
+        "effects": {
+          "type": "array",
+          "description": "Primitives spawned simultaneously at phase start.",
+          "items": { "$ref": "#/$defs/EffectPhaseEntry" },
+          "minItems": 1
+        }
+      }
+    },
+    "EffectPhaseEntry": {
+      "type": "object",
+      "required": ["primitive"],
+      "properties": {
+        "primitive": {
+          "type": "string",
+          "description": "Primitive ID from the Luminary catalog (v1.0: 12 primitives).",
+          "enum": [
+            "energy_orb",
+            "impact_flash",
+            "particle_burst",
+            "ground_ring",
+            "healing_motes",
+            "electric_arc",
+            "hex_rune",
+            "aura_shell",
+            "smoke_wisp",
+            "shockwave",
+            "ribbon_trail",
+            "beam_ray"
+          ]
+        },
+        "scale": {
+          "$ref": "#/$defs/AnimatableParam",
+          "description": "Scale multiplier. [start, end] interpolates over phase duration."
+        },
+        "opacity": {
+          "$ref": "#/$defs/AnimatableParam",
+          "description": "Alpha value 0.0–1.0. [start, end] interpolates over phase duration."
+        },
+        "intensity": {
+          "$ref": "#/$defs/AnimatableParam",
+          "description": "Effect intensity 0.0–1.0. [start, end] interpolates."
+        },
+        "speed": {
+          "type": "number",
+          "description": "Emission/expansion speed. Negative values = inward (gather effects)."
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Particle count for burst/mote primitives."
+        },
+        "width": {
+          "type": "number",
+          "minimum": 0.01,
+          "description": "Width for beam_ray and ribbon_trail."
+        },
+        "length": {
+          "type": "number",
+          "minimum": 0.01,
+          "description": "Trail length for ribbon_trail (seconds of trail history)."
+        },
+        "spread": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Emission spread radius for impact_flash."
+        },
+        "size": {
+          "type": "number",
+          "minimum": 0.01,
+          "description": "Base size for energy_orb and similar."
+        },
+        "rotation": {
+          "type": "number",
+          "description": "Rotation speed in radians/sec for hex_rune."
+        },
+        "distortion": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Visual distortion amount for beam_ray."
+        }
+      }
+    },
+    "AnimatableParam": {
+      "oneOf": [
+        {
+          "type": "number",
+          "description": "Static value — constant for entire phase."
+        },
+        {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[startValue, endValue] — linearly interpolated over phase duration."
+        }
+      ]
+    }
+  }
+}

@@ -86,6 +86,7 @@ See [INTEGRATION.md](docs/INTEGRATION.md) for the complete wiring guide.
 | Document | Purpose |
 |----------|---------|
 | [ADR-VFX-001](docs/ADR-VFX-001-Akashic-VFX-Authority.md) | Architecture decision — module topology & palette authority |
+| [ADR-VFX-002](docs/ADR-VFX-002-Palette-Contract.md) | Palette contract — interface spec, derivation rules, cache lifecycle, consumption rules |
 | [ADR-VFX-006](docs/ADR-VFX-006-Four-Axis-VFX-Vocabulary.md) | Four-axis VFX vocabulary — Social & Creative behavioral triggers |
 | [VFX Research & Strategy](docs/VFX_RESEARCH_AND_STRATEGY.md) | Babylon.js deep dive, World repo analysis, implementation strategy |
 | [Akashic System Reference](docs/AKASHIC_SYSTEM_COMPLETE_REFERENCE.md) | Full Akashic system — attributes, deities, ranks, combat stats |
